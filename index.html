@@ -1,0 +1,22 @@
+<!DOOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Vuejs and Raspberry Pi</title>
+        <link rel="stylesheet" href="index.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+
+    <body>
+        <div id="app">
+
+            <odd-gpio-check 
+            v-for="button in buttons"
+            v-bind:key="button.id"
+            v-bind:button="button"></odd-gpio-check>
+
+        </div>
+
+        <script src="index.js"></script>
+    </body>
+</html>
