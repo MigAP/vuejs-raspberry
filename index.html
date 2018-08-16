@@ -11,9 +11,15 @@
         <div id="app">
 
             <odd-gpio-check 
-            v-for="button in buttons"
+            v-for="button in odd_buttons"
             v-bind:key="button.id"
             v-bind:button="button"></odd-gpio-check>
+
+            <even-gpio-check
+            v-for="button in even_buttons"
+            v-bind:key="button.id"
+            v-bind:button="button"></even-gpio-check>
+
 
         </div>
 
