@@ -142,6 +142,24 @@ let vm = new Vue({
             else{
                 this.submitMessage = "Please select at least one GPIO"; 
             }
+
+            const testJson = {
+                id: "373", 
+                name:"tutu"
+            };
+
+            fetch("http://localhost:3000/", {
+                method:"POST", 
+                body: JSON.stringify(testJson), 
+                headers:{
+                    'Accept':'application/json', 
+                    'Content-Type':'application/json'
+                }
+            })
+            .then(res => res.json())
+            .catch(error => console.error("Error", error))
+            .then(response => console.log("Success", response)); 
+
         }, 
         gpioPage: function(){
             this.selectedPage = "gpio"; 
