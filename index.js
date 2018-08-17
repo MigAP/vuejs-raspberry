@@ -49,9 +49,6 @@ const EVEN_GPIO = [
     
 ]
 
-const SOFTWARE_PWM = [];
-const HARDWARE_PWM = [];
-
 /**
  * GPIO CHEKBOX COMPONENTS 
  */
@@ -131,8 +128,8 @@ let vm = new Vue({
         realtime:null, 
         selectedPage:"gpio", 
         pwmConfiguration: '', 
-        software_pwm : SOFTWARE_PWM, 
-        hardware_pwm: HARDWARE_PWM
+        software_pwm : [], 
+        hardware_pwm: []
     }, 
     methods: {
         submit_buttons: function(event){
@@ -146,6 +143,12 @@ let vm = new Vue({
                 this.submitMessage = "Please select at least one GPIO"; 
             }
         }, 
+        gpioPage: function(){
+            this.selectedPage = "gpio"; 
+            this.pwmConfiguration = ""; 
+            this.software_pwm = [];
+            this.hardware_pwm = [];
+        },
         addGpio: function(gpioValue){
 
             let arrayIndex = this.checkedGpio.indexOf(gpioValue);
