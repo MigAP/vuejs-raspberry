@@ -49,9 +49,12 @@ const EVEN_GPIO = [
     
 ]
 
+const SOFTWARE_PWM = [];
+const HARDWARE_PWM = [];
 
-
-// GPIO CHECKBOX COMPONENTS 
+/**
+ * GPIO CHEKBOX COMPONENTS 
+ */
 Vue.component('odd-gpio-check', {
     props: ['button'], 
     template: `
@@ -80,6 +83,44 @@ Vue.component('even-gpio-check', {
     ` 
 });
 
+/**
+ * PWM SOFTWARE USER INPUT 
+ */
+Vue.component('software-pwm',{
+    props:['pwmconfig'],
+    template: `
+    <div class="spwm-input">
+    <input type="number"
+        min="0"
+        max="255">
+    <label>Software PWM {{ pwmconfig.number}} configuration for physical GPIO : {{ pwmconfig.id}} </label> 
+    </div>
+    `
+});
+
+/**
+ * PWM HARDWARE USER INPUT 
+ */
+Vue.component('hardware-pwm', {
+    props:['pwmconfig'], 
+    template:`
+    <div class="hpwm-input">
+        <label>Frequency
+            <input type="number"
+                min="0"
+                max="125000000">
+        </label>
+
+        <label>Duty Cycle
+            <input type="number"
+                min="0"
+                max="100">
+        </label>
+        <label>Hardware PWM {{ pwmconfig.number}} configuration for physical GPIO : {{ pwmconfig.id}} </label>
+    </div>
+    `
+});
+
 let vm = new Vue({
     el: '#app', 
     data: {
@@ -87,7 +128,11 @@ let vm = new Vue({
         even_buttons : EVEN_GPIO,
         checkedGpio:[], 
         submitMessage: "", 
-        realtime:null 
+        realtime:null, 
+        selectedPage:"gpio", 
+        pwmConfiguration: '', 
+        software_pwm : SOFTWARE_PWM, 
+        hardware_pwm: HARDWARE_PWM
     }, 
     methods: {
         submit_buttons: function(event){
@@ -108,10 +153,48 @@ let vm = new Vue({
             // If it is not on the array we push it, if not we delete it 
             if(arrayIndex == -1){
                 this.checkedGpio.push(gpioValue);
+
+                //Handling pwm configuration 
+                if(this.pwmConfiguration === 'Software'){
+                    this.software_pwm.push({
+                        id:gpioValue,
+                        number: this.checkedGpio.length
+                    });
+                }
+
+                if(this.pwmConfiguration === 'Hardware'){
+                    this.hardware_pwm.push({
+                        id:gpioValue,
+                        number: this.checkedGpio.length
+                    });
+                }
             } 
             else{
-                this.checkedGpio.splice(arrayIndex,1)
+                this.checkedGpio.splice(arrayIndex,1);
+
+                // Remove the posible pwm configurations 
+                if(this.pwmConfiguration === 'Software'){
+                    for(let i= 0; i<this.software_pwm.length; i++){
+                        if(this.software_pwm[i].id == gpioValue){ // found the pwm configuration 
+                            this.software_pwm.splice(i, 1);  // Delete the pwm configuration object 
+                            break;
+                        }
+                    }
+                }
+
+                if(this.pwmConfiguration === 'Hardware'){
+                    for(let i= 0; i<this.hardware_pwm.length; i++){
+                        if(this.hardware_pwm[i].id == gpioValue){ // found the pwm configuration 
+                            this.hardware_pwm.splice(i, 1);  // Delete the pwm configuration object 
+                            break;
+                        }
+                    }
+                }
+
+                
             }
+
+            
         }
     }
 });
