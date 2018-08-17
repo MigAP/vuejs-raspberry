@@ -3,23 +3,43 @@
     <head>
         <meta charset="utf-8"/>
         <title>Vuejs and Raspberry Pi</title>
-        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="index.css" />
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     </head>
 
     <body>
         <div id="app">
 
-            <odd-gpio-check 
-            v-for="button in odd_buttons"
-            v-bind:key="button.id"
-            v-bind:button="button"></odd-gpio-check>
+            <img src="GPIO.png" alt="Raspberry Pi GPIO">
 
-            <even-gpio-check
-            v-for="button in even_buttons"
-            v-bind:key="button.id"
-            v-bind:button="button"></even-gpio-check>
+            <div id="realtimeOption">
+                <label for="realtime_checkbox">Check this option to avoid using the submit button</label>
+                <input type="checkbox" id="realtime_checkbox" v-model="realtime">
+            </div>
+            <section class="buttons">
 
+                <div class="odd_buttons">
+                    <odd-gpio-check 
+                    v-for="button in odd_buttons"
+                    v-bind:key="button.id"
+                    v-bind:button="button"
+                    v-on:gpio-selected="addGpio"
+                    ></odd-gpio-check>
+                </div>
+
+                <div class="even_buttons">
+                    <even-gpio-check
+                    v-for="button in even_buttons"
+                    v-bind:key="button.id"
+                    v-bind:button="button"
+                    v-on:gpio-selected="addGpio"></even-gpio-check>
+                </div>
+     
+            </section>
+
+            <button v-if="!realtime" v-on:click="submit_buttons">Submit</button>
+            <div>{{ checkedGpio}} </div>
+            <p> {{ submitMessage }} </p>
 
         </div>
 
