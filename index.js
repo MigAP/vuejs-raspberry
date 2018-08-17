@@ -49,6 +49,12 @@ const EVEN_GPIO = [
     
 ]
 
+<<<<<<< HEAD
+=======
+const SOFTWARE_PWM = [];
+const HARDWARE_PWM = [];
+
+>>>>>>> a58df88d9a609f81cb7555322985dbe4cb276bf7
 /**
  * GPIO CHEKBOX COMPONENTS 
  */
