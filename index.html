@@ -12,12 +12,15 @@
 
             <header>
                 <h1>Raspberry User Interface</h1>
-                <button class="tablink" v-on:click="selectedPage = 'home'">Home Page</button>
-                <button class="tablink" v-on:click="gpioPage">GPIO</button>
-                <button class="tablink" v-on:click="selectedPage = 'pwm'">PWM</button>
+                <div id="allLinks">
+                    <button class="tablink" v-on:click="selectedPage = 'home'">Home Page</button>
+                    <button class="tablink" v-on:click="gpioPage">GPIO</button>
+                    <button class="tablink" v-on:click="selectedPage = 'pwm'">PWM</button>
+                </div>
             </header>
 
             <section id="user_interface">
+                
                 <div class="raspberry_img">
                     <img src="GPIO.png" alt="Raspberry Pi GPIO">
                 </div>

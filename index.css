@@ -1,13 +1,38 @@
+body{
+	margin: 0;
+	padding: 0;
+}
+
 #app{
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	margin: 0;
+	padding:0;
+}
+
+
+// Header and tabs 
+
+header {
+	background-color: blue;
+
+}
+
+header h1{
+	background-color: blue;
+	color: white;
+    padding: 50px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+#allLinks {
+	display: flex;
 }
 
 .tablink {
     background-color: #555;
     color: white;
-    float: left;
     border: none;
     outline: none;
     cursor: pointer;
@@ -20,28 +45,37 @@
     background-color: #777;
 }
 
+// Controllers 
+
+#user_interface .contols, .raspberry_image {
+	width: 60%;
+}
+
+#user_interface{
+	display: flex;	
+	flex-wrap: nowrap;
+	flex-direction: row;
+}
+
 .controls{
 	color: white; 
-	background-color: #5e8edb;
+	background-color: #5e9aff;
+	border-radius: 7px;
+	margin: 5px;
+	padding: 7px;
+	width: 60%;
 }
 
 .buttons {
     display: flex;
+    margin:7px;
+	padding: 7px;
+	background-color: green;
+	width: 40%;
+	border-radius: 5px;
 }
 
 .odd-gpio-check {
 	display: flex;
 	justify-content: space-between;
-}
-
-header h1 {
-	background-color: blue;
-	color: white;
-    padding: 50px;
-    margin-bottom: 0;
-    text-align: center;
-}
-
-#user_interface{
-	display: flex;	
 }
