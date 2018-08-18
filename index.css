@@ -1,6 +1,7 @@
 #app{
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 }
 
 .tablink {
@@ -12,15 +13,25 @@
     cursor: pointer;
     padding: 14px 16px;
     font-size: 17px;
-    width: 33%;
+    width: 33.33%;
 }
 
 .tablink:hover {
     background-color: #777;
 }
 
+.controls{
+	color: white; 
+	background-color: #5e8edb;
+}
+
 .buttons {
     display: flex;
+}
+
+.odd-gpio-check {
+	display: flex;
+	justify-content: space-between;
 }
 
 header h1 {

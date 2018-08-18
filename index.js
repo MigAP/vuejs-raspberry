@@ -4,12 +4,12 @@
  */
 const ODD_GPIO = [
     {id: 1, label: "3V3", disabled:true, value:"1"}, 
-    {id: 3, label: "GIPO2", disabled:false, value:"3"},
-    {id: 5, label: "GIPO3", disabled:false, value:"5"}, 
-    {id: 7, label: "GIPO4", disabled:false, value:"7"},
+    {id: 3, label: "GPIO2", disabled:false, value:"3"},
+    {id: 5, label: "GPIO3", disabled:false, value:"5"}, 
+    {id: 7, label: "GPIO4", disabled:false, value:"7"},
     {id: 9, label: "GND", disabled:true, value:"9"},
-    {id: 11, label: "GIPO17", disabled:false, value:"11"},
-    {id: 13, label: "GIPO27", disabled:false, value:"13"},
+    {id: 11, label: "GPIO17", disabled:false, value:"11"},
+    {id: 13, label: "GPIO27", disabled:false, value:"13"},
     {id: 15, label: "GPIO22", disabled:false, value:"15"},
     {id: 17, label: "3V3", disabled:true, value:"17"},
     {id: 19, label: "GPIO10", disabled:false, value:"19"},
