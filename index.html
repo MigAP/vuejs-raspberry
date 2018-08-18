@@ -11,72 +11,77 @@
         <div id="app">
 
             <header>
-                <button v-on:click="selectedPage = 'home'">Home Page</button>
-                <button v-on:click="gpioPage">GPIO</button>
-                <button v-on:click="selectedPage = 'pwm'">PWM</button>
+                <h1>Raspberry User Interface</h1>
+                <button class="tablink" v-on:click="selectedPage = 'home'">Home Page</button>
+                <button class="tablink" v-on:click="gpioPage">GPIO</button>
+                <button class="tablink" v-on:click="selectedPage = 'pwm'">PWM</button>
             </header>
 
-            <img src="GPIO.png" alt="Raspberry Pi GPIO">
-
-            
-            <template v-if="selectedPage === 'gpio'">
-                <div id="realtimeOption">
-                    <label for="realtime_checkbox">Check this option to avoid using the submit button</label>
-                    <input type="checkbox" id="realtime_checkbox" v-model="realtime">
+            <section id="user_interface">
+                <div class="raspberry_img">
+                    <img src="GPIO.png" alt="Raspberry Pi GPIO">
                 </div>
-            </template>
+                
 
-            <template v-if="selectedPage === 'pwm'">
-                <select v-model="pwmConfiguration">
-                    <option disabled value="">Please select one</option>
-                    <option>Software</option>
-                    <option>Hardware</option>
-                </select>
-            </template>
+                <div class="controls">
+                    <template v-if="selectedPage === 'gpio'">
+                        <div id="realtimeOption">
+                            <label for="realtime_checkbox">Check this option to avoid using the submit button</label>
+                            <input type="checkbox" id="realtime_checkbox" v-model="realtime">
+                        </div>
+                    </template>
 
-            <template v-if="selectedPage === 'gpio'|| selectedPage === 'pwm'">
+                    <template v-if="selectedPage === 'pwm'">
+                        <select v-model="pwmConfiguration">
+                            <option disabled value="">Please select one</option>
+                            <option>Software</option>
+                            <option>Hardware</option>
+                        </select>
+                    </template>
 
-                <section class="buttons">
+                    <template v-if="selectedPage === 'gpio'|| selectedPage === 'pwm'">
 
-                    <div class="odd_buttons">
-                        <odd-gpio-check 
-                        v-for="button in odd_buttons"
-                        v-bind:key="button.id"
-                        v-bind:button="button"
-                        v-on:gpio-selected="addGpio"
-                        ></odd-gpio-check>
-                    </div>
+                        <section class="buttons">
 
-                    <div class="even_buttons">
-                        <even-gpio-check
-                        v-for="button in even_buttons"
-                        v-bind:key="button.id"
-                        v-bind:button="button"
-                        v-on:gpio-selected="addGpio"></even-gpio-check>
-                    </div>
-        
-                </section>
-            </template>
+                            <div class="odd_buttons">
+                                <odd-gpio-check 
+                                v-for="button in odd_buttons"
+                                v-bind:key="button.id"
+                                v-bind:button="button"
+                                v-on:gpio-selected="addGpio"
+                                ></odd-gpio-check>
+                            </div>
 
-            <button v-if="!realtime" v-on:click="submit_buttons">Submit</button>
-            <div>{{ checkedGpio}} </div>
+                            <div class="even_buttons">
+                                <even-gpio-check
+                                v-for="button in even_buttons"
+                                v-bind:key="button.id"
+                                v-bind:button="button"
+                                v-on:gpio-selected="addGpio"></even-gpio-check>
+                            </div>
+                
+                        </section>
+                        <button v-if="!realtime" v-on:click="submit_buttons">Submit</button>
+                        <div>{{ checkedGpio}} </div>
+                    </template>
 
-            <template v-if="pwmConfiguration === 'Software'">
-                <software-pwm
-                v-for="pwmconfig in software_pwm"
-                v-bind:key="pwmconfig.id"
-                v-bind:pwmConfig="pwmconfig"></software-pwm>
-            </template>
+                    <template v-if="pwmConfiguration === 'Software'">
+                        <software-pwm
+                        v-for="pwmconfig in software_pwm"
+                        v-bind:key="pwmconfig.id"
+                        v-bind:pwmConfig="pwmconfig"></software-pwm>
+                    </template>
 
-            <template v-if="pwmConfiguration === 'Hardware'">
-                <hardware-pwm
-                v-for="pwmconfig in hardware_pwm"
-                v-bind:key="pwmconfig.id"
-                v-bind:pwmconfig="pwmconfig"></hardware-pwm>
-            </template>
+                    <template v-if="pwmConfiguration === 'Hardware'">
+                        <hardware-pwm
+                        v-for="pwmconfig in hardware_pwm"
+                        v-bind:key="pwmconfig.id"
+                        v-bind:pwmconfig="pwmconfig"></hardware-pwm>
+                    </template>
 
-            <p> {{ submitMessage }} </p>
-
+                    <p> {{ submitMessage }} </p>
+                </div>
+            </section>
         </div>
 
         <script src="index.js"></script>

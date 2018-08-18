@@ -143,6 +143,9 @@ let vm = new Vue({
                 this.submitMessage = "Please select at least one GPIO"; 
             }
 
+            /*
+            Testing fetching data to the server 
+            */
             const testJson = {
                 id: "373", 
                 name:"tutu"

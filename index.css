@@ -1,3 +1,36 @@
+#app{
+	display: flex;
+	flex-direction: column;
+}
+
+.tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 33%;
+}
+
+.tablink:hover {
+    background-color: #777;
+}
+
 .buttons {
     display: flex;
+}
+
+header h1 {
+	background-color: blue;
+	color: white;
+    padding: 50px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+#user_interface{
+	display: flex;	
 }
