@@ -1,4 +1,9 @@
 /**
+ * Raspberry Pi route 
+ */
+const RPI_ROUTE = "http://localhost:3000/";
+
+/**
  * GPIO arrays for the template
  * 
  */
@@ -134,42 +139,64 @@ let vm = new Vue({
     methods: {
         submit_buttons: function(event){
 
-            // Check if checkedGpio has at least one element 
-            if( typeof this.checkedGpio !== 'undefined' && this.checkedGpio.length >0){
-                this.submitMessage = "GPIO(s) have been selected"; 
-                // send data to the Raspberry....
-            }
-            else{
-                this.submitMessage = "Please select at least one GPIO"; 
-            }
+            let that = this; // Avoid problem with this inside the Promises 
+            switch(this.selectedPage){
+                case "gpio":
+                    
+                    sendGpio(this.checkedGpio)
+                    .then(function (response) {that.submitMessage= response;})
+                    .catch(function(error) {that.submitMessage = error;});
+                break;
 
-            /*
-            Testing fetching data to the server 
-            */
-            const testJson = {
-                id: "373", 
-                name:"tutu"
-            };
+                case "pwm":
+                    if(this.pwmConfiguration === "Software"){
+                        sendGpio(this.software_pwm)
+                        .then(function (response) {that.submitMessage = response;})
+                        .catch(function(error) {that.submitMessage = error;});
+                    }
+                    else if( this.pwmConfiguration === "Hardware"){
+                        sendGpio(this.hardware_pwm)
+                        .then(function (response) {that.submitMessage = response;})
+                        .catch(function(error) {that.submitMessage = error;});
+                    }
+                    else{
+                        this.submitMessage = "Please select one type of PWM configuration";
+                    }
+                break;
 
-            fetch("http://localhost:3000/", {
-                method:"POST", 
-                body: JSON.stringify(testJson), 
-                headers:{
-                    'Accept':'application/json', 
-                    'Content-Type':'application/json'
-                }
-            })
-            .then(res => res.json())
-            .catch(error => console.error("Error", error))
-            .then(response => console.log("Success", response)); 
+                case "home":
+                break; 
+            }
+            
+            // /*
+            // Testing fetching data to the server 
+            // */
+            // const testJson = {
+            //     id: "373", 
+            //     name:"tutu"
+            // };
+
+            // fetch("http://localhost:3000/", {
+            //     method:"POST", 
+            //     body: JSON.stringify(testJson), 
+            //     headers:{
+            //         'Accept':'application/json', 
+            //         'Content-Type':'application/json'
+            //     }
+            // })
+            // .then(res => res.json())
+            // .catch(error => console.error("Error", error))
+            // .then(response => console.log("Success", response)); 
 
         }, 
+
         gpioPage: function(){
             this.selectedPage = "gpio"; 
             this.pwmConfiguration = ""; 
             this.software_pwm = [];
             this.hardware_pwm = [];
         },
+
         addGpio: function(gpioValue){
 
             let arrayIndex = this.checkedGpio.indexOf(gpioValue);
@@ -178,14 +205,14 @@ let vm = new Vue({
             if(arrayIndex == -1){
                 this.checkedGpio.push(gpioValue);
 
-                //Handling pwm configuration 
+                //Adding  pwm configuration 
                 if(this.pwmConfiguration === 'Software'){
                     this.software_pwm.push({
                         id:gpioValue,
                         number: this.checkedGpio.length
                     });
                 }
-
+                // Adding pwm configurations 
                 if(this.pwmConfiguration === 'Hardware'){
                     this.hardware_pwm.push({
                         id:gpioValue,
@@ -196,7 +223,7 @@ let vm = new Vue({
             else{
                 this.checkedGpio.splice(arrayIndex,1);
 
-                // Remove the posible pwm configurations 
+                // Remove the posible pwm software configurations 
                 if(this.pwmConfiguration === 'Software'){
                     for(let i= 0; i<this.software_pwm.length; i++){
                         if(this.software_pwm[i].id == gpioValue){ // found the pwm configuration 
@@ -205,7 +232,7 @@ let vm = new Vue({
                         }
                     }
                 }
-
+                // Remove the possible pwm hardware configuration
                 if(this.pwmConfiguration === 'Hardware'){
                     for(let i= 0; i<this.hardware_pwm.length; i++){
                         if(this.hardware_pwm[i].id == gpioValue){ // found the pwm configuration 
@@ -214,11 +241,32 @@ let vm = new Vue({
                         }
                     }
                 }
-
-                
             }
-
-            
         }
     }
 });
+
+function sendGpio(data){
+
+    return new Promise ( function (resolve, reject){
+
+        // Check if data has at least one element 
+        if( typeof data !== 'undefined' && data.length >0){
+
+            fetch(RPI_ROUTE, {
+                method:"POST", 
+                body: JSON.stringify(data), 
+                headers:{
+                    'Accept':'application/json', 
+                    'Content-Type':'application/json'
+                }
+            })
+            .then(function (response) { response.text().then(text => resolve(text)) })// Gets the body of the response and transformit to simple text
+            .catch(error => reject(error)); 
+
+        }
+        else{
+            reject("Please select at least one GPIO"); 
+        }
+    });
+}

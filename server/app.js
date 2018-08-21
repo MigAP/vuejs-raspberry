@@ -13,12 +13,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser()); 
 
 
-const toto = {
-    "id":"23", 
-    "value":"titi", 
-    "message":"hey"
-};
-
 app.use( (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); 
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -26,7 +20,7 @@ app.use( (req, res, next) => {
 })
 app.post("/", function(req, res){
     console.log(req.body); 
-    res.json(req.body);
+    res.send("The request has been treated");
 });
 
 app.listen(3000, function(){
