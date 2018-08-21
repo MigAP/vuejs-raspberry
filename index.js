@@ -94,7 +94,8 @@ Vue.component('software-pwm',{
     <div class="spwm-input">
     <input type="number"
         min="0"
-        max="255">
+        max="255"
+        v-on:input="$emit('soft-config', [$event.target.value, pwmconfig.number])">
     <label>Software PWM {{ pwmconfig.number}} configuration for physical GPIO : {{ pwmconfig.id}} </label> 
     </div>
     `
@@ -110,13 +111,15 @@ Vue.component('hardware-pwm', {
         <label>Frequency
             <input type="number"
                 min="0"
-                max="125000000">
+                max="125000000"
+                v-on:input="$emit('hard-config-freq', [$event.target.value, pwmconfig.number])">
         </label>
 
         <label>Duty Cycle
             <input type="number"
                 min="0"
-                max="100">
+                max="100"
+                v-on:input="$emit('hard-config-duty', [$event.target.value, pwmconfig.number])">
         </label>
         <label>Hardware PWM {{ pwmconfig.number}} configuration for physical GPIO : {{ pwmconfig.id}} </label>
     </div>
@@ -140,6 +143,7 @@ let vm = new Vue({
         submit_buttons: function(event){
 
             let that = this; // Avoid problem with this inside the Promises 
+
             switch(this.selectedPage){
                 case "gpio":
                     
@@ -209,14 +213,17 @@ let vm = new Vue({
                 if(this.pwmConfiguration === 'Software'){
                     this.software_pwm.push({
                         id:gpioValue,
-                        number: this.checkedGpio.length
+                        number: this.checkedGpio.length,
+                        dutyCycle:100
                     });
                 }
                 // Adding pwm configurations 
                 if(this.pwmConfiguration === 'Hardware'){
                     this.hardware_pwm.push({
                         id:gpioValue,
-                        number: this.checkedGpio.length
+                        number: this.checkedGpio.length, 
+                        dutyCycle:50, 
+                        frequency:50
                     });
                 }
             } 
@@ -242,6 +249,30 @@ let vm = new Vue({
                     }
                 }
             }
+        }, 
+
+        addSoft: function(data){
+
+            let dutyCycleValue = parseInt(data[0]);
+            let index = data[1]-1; 
+
+            this.software_pwm[index].dutyCycle = dutyCycleValue;
+        }, 
+
+        addHardFreq: function(data){
+
+            let frequency = parseInt(data[0]);
+            let index = data[1]-1; 
+
+            this.hardware_pwm[index].frequency = frequency;
+        }, 
+
+        addHardDuty: function(data){
+
+            let dutyCycleValue = parseInt(data[0]);
+            let index = data[1]-1; 
+
+            this.hardware_pwm[index].dutyCycle = dutyCycleValue; 
         }
     }
 });

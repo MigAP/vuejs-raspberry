@@ -28,7 +28,7 @@
                 
 
                 <div class="controls">
-                    
+
                     <template v-if="selectedPage === 'gpio'">
                         <div id="realtimeOption">
                             <label for="realtime_checkbox">Check this option to avoid using the submit button</label>
@@ -74,14 +74,17 @@
                         <software-pwm
                         v-for="pwmconfig in software_pwm"
                         v-bind:key="pwmconfig.id"
-                        v-bind:pwmConfig="pwmconfig"></software-pwm>
+                        v-bind:pwmConfig="pwmconfig"
+                        v-on:soft-config="addSoft"></software-pwm>
                     </template>
 
                     <template v-if="pwmConfiguration === 'Hardware'">
                         <hardware-pwm
                         v-for="pwmconfig in hardware_pwm"
                         v-bind:key="pwmconfig.id"
-                        v-bind:pwmconfig="pwmconfig"></hardware-pwm>
+                        v-bind:pwmconfig="pwmconfig"
+                        v-on:hard-config-freq="addHardFreq"
+                        v-on:hard-config-duty="addHardDuty"></hardware-pwm>
                     </template>
 
                     <p> {{ submitMessage }} </p>
