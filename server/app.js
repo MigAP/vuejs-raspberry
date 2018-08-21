@@ -25,10 +25,15 @@ app.post("/", function(req, res){
 });
 app.post("/gpio", function(req, res){
     console.log(req.body); 
+    // console.log("TYPE OF ")
+    // console.log(typeof JSON.parse(req.body));
+    console.log(req.body[0]);
     res.send("The gpio request has been treated");
 });
 app.post("/pwm/soft", function(req, res){
     console.log(req.body); 
+    
+
     res.send("The pwm soft request has been treated");
 });
 app.post("/pwm/hard", function(req, res){

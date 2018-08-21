@@ -1,7 +1,7 @@
 /**
  * Raspberry Pi route 
  */
-const RPI_ROUTE = "http://localhost:3000/";
+const RPI_ROUTE = "http://192.168.1.43:4551/api/v1/srv/raspberry/";
 
 /**
  * GPIO arrays for the template
@@ -134,11 +134,19 @@ let vm = new Vue({
         checkedGpio:[], 
         submitMessage: "", 
         realtime:null, 
-        selectedPage:"gpio", 
+        selectedPage:"home", 
         pwmConfiguration: '', 
         software_pwm : [], 
         hardware_pwm: []
     }, 
+    beforeMount: function(){
+        console.log("Hook"); 
+        let that = this; 
+        fetch(RPI_ROUTE)
+        .then(function (response) { response.text().then(text => that.submitMessage = text);})// Gets the body of the response and transformit to simple text
+        .catch(error => reject(error)); 
+        
+    },
     methods: {
         submit_buttons: function(event){
 
