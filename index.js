@@ -147,19 +147,19 @@ let vm = new Vue({
             switch(this.selectedPage){
                 case "gpio":
                     
-                    sendGpio(this.checkedGpio)
+                    sendGpio(this.checkedGpio,"gpio")
                     .then(function (response) {that.submitMessage= response;})
                     .catch(function(error) {that.submitMessage = error;});
                 break;
 
                 case "pwm":
                     if(this.pwmConfiguration === "Software"){
-                        sendGpio(this.software_pwm)
+                        sendGpio(this.software_pwm,"pwm/soft")
                         .then(function (response) {that.submitMessage = response;})
                         .catch(function(error) {that.submitMessage = error;});
                     }
                     else if( this.pwmConfiguration === "Hardware"){
-                        sendGpio(this.hardware_pwm)
+                        sendGpio(this.hardware_pwm,"pwm/hard")
                         .then(function (response) {that.submitMessage = response;})
                         .catch(function(error) {that.submitMessage = error;});
                     }
@@ -172,33 +172,26 @@ let vm = new Vue({
                 break; 
             }
             
-            // /*
-            // Testing fetching data to the server 
-            // */
-            // const testJson = {
-            //     id: "373", 
-            //     name:"tutu"
-            // };
-
-            // fetch("http://localhost:3000/", {
-            //     method:"POST", 
-            //     body: JSON.stringify(testJson), 
-            //     headers:{
-            //         'Accept':'application/json', 
-            //         'Content-Type':'application/json'
-            //     }
-            // })
-            // .then(res => res.json())
-            // .catch(error => console.error("Error", error))
-            // .then(response => console.log("Success", response)); 
-
         }, 
+        homePage: function(){
+            this.selectedPage = "home";
+            this.pwmConfiguration = ""; 
+            this.software_pwm = [];
+            this.hardware_pwm = [];
+        },
 
         gpioPage: function(){
             this.selectedPage = "gpio"; 
             this.pwmConfiguration = ""; 
             this.software_pwm = [];
             this.hardware_pwm = [];
+        },
+        pwmPage: function(){
+            this.selectedPage="pwm";
+            this.pwmConfiguration=""; 
+            this.software_pwm = [];
+            this.hardware_pwm = [];
+
         },
 
         addGpio: function(gpioValue){
@@ -277,14 +270,16 @@ let vm = new Vue({
     }
 });
 
-function sendGpio(data){
+function sendGpio(data, routeArgs){
 
     return new Promise ( function (resolve, reject){
+
+        let route = RPI_ROUTE+routeArgs;
 
         // Check if data has at least one element 
         if( typeof data !== 'undefined' && data.length >0){
 
-            fetch(RPI_ROUTE, {
+            fetch(route, {
                 method:"POST", 
                 body: JSON.stringify(data), 
                 headers:{
