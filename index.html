@@ -87,7 +87,8 @@
                         v-on:hard-config-duty="addHardDuty"></hardware-pwm>
                     </template>
 
-                    <p> {{ submitMessage }} </p>
+                    <p v-if="selectedPage === 'gpio'|| selectedPage === 'pwm'"> {{ submitMessage }} </p>
+                    <p ><span v-if="selectedPage === 'home'" v-html="readAllMessage"></span></p>
                 </div>
             </section>
         </div>

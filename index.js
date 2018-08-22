@@ -132,6 +132,7 @@ let vm = new Vue({
         odd_buttons : ODD_GPIO, 
         even_buttons : EVEN_GPIO,
         checkedGpio:[], 
+        readAllMessage:"", 
         submitMessage: "", 
         realtime:null, 
         selectedPage:"home", 
@@ -140,11 +141,15 @@ let vm = new Vue({
         hardware_pwm: []
     }, 
     beforeMount: function(){
-        console.log("Hook"); 
         let that = this; 
         fetch(RPI_ROUTE)
-        .then(function (response) { response.text().then(text => that.submitMessage = text);})// Gets the body of the response and transformit to simple text
-        .catch(error => reject(error)); 
+        .then(function (response) { 
+
+            for(let i = 0; i<response.body.length; i++){
+                that.readAllMessage += response.body[i].gpioNumber + " "+ response.body[i].gpioMode+" "+response.body[i].gpioValue+"<br>"; 
+            }
+        })
+        .catch(error => console.error(error)); 
         
     },
     methods: {
