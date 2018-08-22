@@ -142,17 +142,12 @@ let vm = new Vue({
     }, 
     beforeMount: function(){
         let that = this; 
-        fetch(RPI_ROUTE)
-        .then(function (response) { 
+        homeReadAll()
+        .then((gpioJson) => {
 
-            response.json().then(function (data){
-
-                console.log(data);
-                for(let i = 0; i<data.length; i++){
-                    that.readAllMessage += "Gpio Number: "+data[i].gpioNumber + "    Gpio Mode: "+ data[i].gpioMode+"   Gpio Value: "+data[i].gpioValue+"<br>"; 
-                }
-            });
-            
+            for(let i = 0; i<gpioJson.length; i++){
+                that.readAllMessage += "Gpio Number: "+gpioJson[i].gpioNumber + " Gpio Mode: "+ gpioJson[i].gpioMode+" Gpio Value: "+gpioJson[i].gpioValue+"<br>"; 
+            }
         })
         .catch(error => console.error(error)); 
         
@@ -196,6 +191,18 @@ let vm = new Vue({
             this.pwmConfiguration = ""; 
             this.software_pwm = [];
             this.hardware_pwm = [];
+            this.readAllMessage = ""; 
+
+            let that = this; 
+            
+            homeReadAll()
+            .then((gpioJson) => {
+
+                for(let i = 0; i<gpioJson.length; i++){
+                    that.readAllMessage += "Gpio Number: "+gpioJson[i].gpioNumber + " Gpio Mode: "+ gpioJson[i].gpioMode+" Gpio Value: "+gpioJson[i].gpioValue+"<br>"; 
+                }
+            })
+            .catch(error => console.error(error)); 
         },
 
         gpioPage: function(){
@@ -312,5 +319,20 @@ function sendGpio(data, routeArgs){
         else{
             reject("Please select at least one GPIO"); 
         }
+    });
+}
+
+function homeReadAll(){
+    return new Promise((resolve, reject) => {
+
+        fetch(RPI_ROUTE)
+        .then(function (response) { 
+
+            response.json().then(function (data){
+                resolve(data);
+            });
+            
+        })
+        .catch( error => reject(error)); 
     });
 }
