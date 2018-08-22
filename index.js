@@ -145,9 +145,14 @@ let vm = new Vue({
         fetch(RPI_ROUTE)
         .then(function (response) { 
 
-            for(let i = 0; i<response.body.length; i++){
-                that.readAllMessage += response.body[i].gpioNumber + " "+ response.body[i].gpioMode+" "+response.body[i].gpioValue+"<br>"; 
-            }
+            response.json().then(function (data){
+
+                console.log(data);
+                for(let i = 0; i<data.length; i++){
+                    that.readAllMessage += "Gpio Number: "+data[i].gpioNumber + "    Gpio Mode: "+ data[i].gpioMode+"   Gpio Value: "+data[i].gpioValue+"<br>"; 
+                }
+            });
+            
         })
         .catch(error => console.error(error)); 
         
