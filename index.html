@@ -44,48 +44,55 @@
                         </select>
                     </template>
 
-                    <template v-if="selectedPage === 'gpio'|| selectedPage === 'pwm'">
+                    <div class="buttonsAndConfig">
+                        <template v-if="selectedPage === 'gpio'|| selectedPage === 'pwm'">
 
-                        <section class="buttons">
-
-                            <div class="odd_buttons">
-                                <odd-gpio-check 
-                                v-for="button in odd_buttons"
-                                v-bind:key="button.id"
-                                v-bind:button="button"
-                                v-on:gpio-selected="addGpio"
-                                ></odd-gpio-check>
+                            <section class="buttons">
+    
+                                <div class="odd_buttons">
+                                    <odd-gpio-check 
+                                    v-for="button in odd_buttons"
+                                    v-bind:key="button.id"
+                                    v-bind:button="button"
+                                    v-on:gpio-selected="addGpio"
+                                    ></odd-gpio-check>
+                                </div>
+    
+                                <div class="even_buttons">
+                                    <even-gpio-check
+                                    v-for="button in even_buttons"
+                                    v-bind:key="button.id"
+                                    v-bind:button="button"
+                                    v-on:gpio-selected="addGpio"></even-gpio-check>
+                                </div>
+                    
+                            </section>
+                            
+                        </template>
+    
+                        <template v-if="pwmConfiguration === 'Software'">
+                            <div class="pwmConfig">
+                                    <software-pwm
+                                    v-for="pwmconfig in software_pwm"
+                                    v-bind:key="pwmconfig.id"
+                                    v-bind:pwmConfig="pwmconfig"
+                                    v-on:soft-config="addSoft"></software-pwm>
                             </div>
-
-                            <div class="even_buttons">
-                                <even-gpio-check
-                                v-for="button in even_buttons"
-                                v-bind:key="button.id"
-                                v-bind:button="button"
-                                v-on:gpio-selected="addGpio"></even-gpio-check>
+                        </template>
+    
+                        <template v-if="pwmConfiguration === 'Hardware'">
+                            <div class="pwmConfig">
+                                    <hardware-pwm
+                                    v-for="pwmconfig in hardware_pwm"
+                                    v-bind:key="pwmconfig.id"
+                                    v-bind:pwmconfig="pwmconfig"
+                                    v-on:hard-config-freq="addHardFreq"
+                                    v-on:hard-config-duty="addHardDuty"></hardware-pwm>
                             </div>
-                
-                        </section>
-                        <button v-if="!realtime" v-on:click="submit_buttons">Submit</button>
-                        <div>{{ checkedGpio}} </div>
-                    </template>
-
-                    <template v-if="pwmConfiguration === 'Software'">
-                        <software-pwm
-                        v-for="pwmconfig in software_pwm"
-                        v-bind:key="pwmconfig.id"
-                        v-bind:pwmConfig="pwmconfig"
-                        v-on:soft-config="addSoft"></software-pwm>
-                    </template>
-
-                    <template v-if="pwmConfiguration === 'Hardware'">
-                        <hardware-pwm
-                        v-for="pwmconfig in hardware_pwm"
-                        v-bind:key="pwmconfig.id"
-                        v-bind:pwmconfig="pwmconfig"
-                        v-on:hard-config-freq="addHardFreq"
-                        v-on:hard-config-duty="addHardDuty"></hardware-pwm>
-                    </template>
+                        </template>
+                    </div>
+                    <button v-if="!realtime && (selectedPage === 'gpio'|| selectedPage === 'pwm')" v-on:click="submit_buttons">Submit</button>
+                    <div v-if="!realtime && (selectedPage === 'gpio'|| selectedPage === 'pwm')">{{ checkedGpio}} </div>
 
                     <p v-if="selectedPage === 'gpio'|| selectedPage === 'pwm'"> {{ submitMessage }} </p>
                     <p ><span v-if="selectedPage === 'home'" v-html="readAllMessage"></span></p>

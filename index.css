@@ -67,7 +67,9 @@ header h1{
 	padding: 7px;
 	width: 60%;
 }
-
+.buttonsAndConfig{
+	display: flex; 
+}
 .buttons {
     display: flex;
     margin:7px;
@@ -84,4 +86,9 @@ header h1{
 
 .even-gpio-check {
 	display: flex;
+}
+
+.pwmConfig{
+	display: flex;
+	flex-direction: column; 
 }
