@@ -295,6 +295,7 @@ let vm = new Vue({
     }
 });
 
+// Post to the rpi server with the gpio instructions 
 function sendGpio(data, routeArgs){
 
     return new Promise ( function (resolve, reject){
@@ -322,6 +323,7 @@ function sendGpio(data, routeArgs){
     });
 }
 
+// GET to the rpi server to get all the values of the GPIO 
 function homeReadAll(){
     return new Promise((resolve, reject) => {
 
